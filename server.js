@@ -18,16 +18,17 @@ MongoClient.connect(process.env.MONGO_URL)
   .then((client) => {
     const db = client.db("practice");
     const usersCollection = db.collection("users");
-    app.get('/', (req, res) => {
+    app.get("/", (req, res) => {
       usersCollection
-          .find()
-          .toArray()
-          .then(results => {
-              res.render('index.ejs', { usersCollection: results })
-          })
-          .catch(error => console.error(error))
-  })
+        .find()
+        .toArray()
+        .then((results) => {
+          res.render("index.ejs", { usersCollection: results });
+        })
+        .catch((error) => console.error(error));
+    });
     app.post("/users", (req, res) => {
+      
       usersCollection
         .insertOne(req.body)
         .then((result) => {
@@ -35,17 +36,38 @@ MongoClient.connect(process.env.MONGO_URL)
         })
         .catch((error) => console.log(error));
     });
+    app.put("/users", (req, res) => {
+    usersCollection
+      .findOneAndUpdate(
+        { username: req.body.username },
+        {
+          $set: {
+            username: req.body.username,
+            password: req.body.password,
+          },
+        },
+        {
+          upsert: false,
+        },
+        {
+          returnNewDocument: true,
+        }
+      )
+      .then((result) => {
+        res.json("Success");
+        return res;
+      });
+  })
   })
   .catch((error) => console.error(error));
+
 
 // app.get('/', function (req, res){
 // 	res.sendFile(__dirname + '/index.html');
 // 	// if this does not work, remember to save your file after each major change
 // })
 
-app.post('/users', (req, res) => {
-	console.log(req.body)
-})
-app.listen(PORT, function() {
-	console.log(`Server is live! Listening at port ${PORT}`);
-})
+
+app.listen(PORT, function () {
+  console.log(`Server is live! Listening at port ${PORT}`);
+});

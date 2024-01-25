@@ -15,13 +15,15 @@
     </form>
     <ul class="users">
       <% for(var i=0; i < usersCollection.length; i++) {%>
-      <li class="user">
-        <!-- Output name from the iterated user object -->
-        <span> <%= usersCollection[i].username %> </span>:
-        <!-- Output quote from the iterated user object -->
-        <span> <%= usersCollection[i].password %> </span>
-      </li>
-      <% } %>
-    </ul>
+        <li class="user">
+          
+          <!-- Output name from the iterated user object -->
+          <span> <%= usersCollection[i].username %> </span>:
+          <!-- Output quote from the iterated user object -->
+          <span> <%= usersCollection[i].password %> </span>
+        </li>
+        <% } %>
+      </ul>
+      <script src="/main.js"></script>
   </body>
 </html>
